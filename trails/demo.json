@@ -1,0 +1,118 @@
+{
+    "title": "demo",
+    "trailid": "1525627836",
+    "lastedit": 1664360436,
+    "initialState":{
+        "board":[
+            "a"
+        ],
+    "quests" : {
+        "b":{
+            "selected" : "1"
+        }
+    },
+    "keys": {
+        "addrese": "wert",
+        "logic0": true,
+        "logic1": false
+    }
+    },
+    "quests": {
+        "a":{
+        "type":"intro",
+        "title":"Intro",
+        "content": "Das ist der Beginn der Demonstration",
+        "onsubmit":[
+            {
+                "resource": "board",
+                "subject": "b",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "a",
+                "verb": "remove"
+            }
+        ]
+    },
+    "b":{
+        "type":"multipleChoice",
+        "title":"Multiple Choice",
+        "stem": "Das ist ein generischer Multiple Choice Posten",
+        "ontry": {
+            "2": [
+                {
+                    "resource": "quests",
+                    "subject": "b",
+                    "verb": "Dieser Befehl wird ausgelöst wehn der 2. Versuch getätigt wird."
+                }
+            ]
+        },
+        "options":{
+            "a":{
+                "content": "Das hier ist die 1. Option",
+                "onsubmit":[
+                    {
+                        "resource": "board",
+                        "subject": "b_text",
+                        "verb": "Dieser Befehl wird ausgelöst wehn die 1. Option gewählt und geprüft wird"
+                    }
+                ] 
+            },
+            "b":{
+                "content": "Das hier ist die 2. Option",
+                "onsubmit":[                ] 
+            },
+            "c":{
+                "content": "Und das hier ist die 3. Option",
+                "onsubmit":[                ] 
+            }
+        }
+    },
+    "b_text":{
+        "type":"text",
+        "title": "Erklärung",
+        "content": "Gut gemacht du kannst jetzt irgend eine Option wählen um Fortzufahren. Der Nächste Block wird Über die Anzahl getätigten Versuche ausgelöst."
+    },
+    "c":{
+            "type": "qrscan",
+            "title": "Qrscan",
+            "addresses": ["logic0","logic1"]
+    },
+    "c_text":{
+        "type":"text",
+        "title": "Qr Code",
+        "content": "Scan einen Beliebigen Qr code um fortzufahren"
+    },
+    "c_result":{
+        "type": "output",
+            "title": "test",
+            "address": "logic0",
+            "content": "Der Gescante Code ist :"
+    },
+    "fin":{
+        "type":"text",
+        "title": "Finito",
+        "content": "Das wars mit der demo"
+    }
+    },
+    "megaMatrix": [
+        {"condition":{
+            "type": "aeqb",
+            "key1": "logic0",
+            "key0": "logic1"
+        },
+        "effects": [
+            {
+                "resource": "quests",
+                "subject": "c",
+                "verb": "disable"
+            },
+            {
+                "resource": "board",
+                "subject": "c_result",
+                "verb": "add"
+            }
+        ]
+    }
+    ]
+}

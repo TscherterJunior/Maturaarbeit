@@ -1,0 +1,93 @@
+{
+    "title": "t2",
+    "trailid": "oijoijoi",
+    "lastedit": 177837874,
+    "initialState": {
+        "board": [
+            "a",
+            "b",
+            "c"
+        ],
+        "quests": {},
+        "keys": {
+            "delta" : "t" 
+        }
+    },
+    "quests": {
+        "a": {
+            "type": "intro",
+            "title": "test",
+            "content": "reeeeeeeeeeeeeeeee",
+            "onsubmit": [
+                {
+                    "resource": "board",
+                    "subject": "b",
+                    "verb": "add"
+                }
+            ]
+        },
+        "b": {
+            "type": "output",
+            "title": "test",
+            "address": "delta",
+            "content": "Delta is",
+            "onsubmit": [
+                {
+                    "resource": "board",
+                    "subject": "b",
+                    "verb": "add"
+                }
+            ]
+        },
+        "c": {
+            "type": "qrscan",
+            "title": "Qrscan",
+            "addresses": ["test","debug"]
+        }
+    },
+    "megaMatrix": [
+        {
+            "condition": {
+                "type": "deq",
+                "key": "test",
+                "value": "https://de.wikipedia.org"
+            },
+            "effects": [
+                {
+                    "resource": "quests",
+                    "subject": "c",
+                    "verb": "disable"
+                },
+                {
+                    "resource": "keys",
+                    "subject": "esFunzt",
+                    "verb": "set",
+                    "object": "yaaa man"
+                }
+            ]
+        },
+        {
+            "condition": {
+                "type": "all",
+                "s": [{
+                    "type": "deq",
+                    "key": "test",
+                    "value": "https://de.wikipedia.org"
+                },
+                {
+                    "type": "deq",
+                    "key": "delta",
+                    "value": "t"
+                }]
+            },
+            "effects": [
+                {
+                    "resource": "keys",
+                    "subject": "fijoidjoifjoi",
+                    "verb": "set",
+                    "object": "siuuuuuuuu"
+                }
+            ]
+        }
+    ]
+}

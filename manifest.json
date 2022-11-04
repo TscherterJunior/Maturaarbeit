@@ -1,0 +1,15 @@
+{
+    "short_name": "Omphali",
+    "name": "Omphali",
+    "icons": [
+    {
+    "src":"/icon.png",
+    "sizes": "276x276",
+    "type": "image/png"
+    }
+    ],
+    "start_url": "/?utm_source=homescreen",
+    "background_color": "#e05a47",
+    "theme_color": "#e05a47",
+    "display": "standalone"
+  }

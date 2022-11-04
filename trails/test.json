@@ -1,0 +1,1458 @@
+{
+    "title": "Demonstration",
+    "trailid": "Test",
+    "lastedit": 42,
+    "initialState": {
+        "board": [
+            "Info"
+        ],
+        "quests": {},
+        "keys": {
+            "Speicher_Board_Demo_Switch": true,
+            "Cellular_Trigger_1": false,
+            "Cellular_Trigger_2": false,
+            "Cellular_Trigger_3": false,
+            "Cellular_Imput_1": true,
+            "Cellular_Imput_2": true,
+            "Cellular_Imput_3": true,
+            "Output_demo": "Foobar",
+            "Display_Speicher":false,
+            "Display_Befehle":false,
+            "Display_Bedingungen": false,
+            "Display_Posten": false
+        }
+    },
+    "quests": {
+        "Info": {
+            "type": "intro",
+            "title": "test",
+            "content": "Das ist der anfang der Demo Schnitzeljagd zum beginnen den Knopf drücken",
+            "onsubmit": [
+                {
+                    "resource": "board",
+                    "subject": "Was darfs den sein?",
+                    "verb": "add"
+                },
+                {
+                    "resource": "board",
+                    "subject": "Info",
+                    "verb": "remove"
+                }
+            ]
+        },
+        "Was darfs den sein?" : {
+            "type": "multipleChoice",
+            "title": "Eine auswahl Möglichkeit",
+            "stem": "Möchten Sie durchgeführt werden oder interesiert sie etwas Spezifisches?",
+            "options":  {
+                "a": {
+                    "content": "Geleitet",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Display_Speicher",
+                        "verb": "set",
+                        "object": true
+                    },{
+                        "resource": "board",
+                        "subject": "Geleitet_Next_1",
+                        "verb": "add"
+                    },
+                    {
+                        "resource": "board",
+                        "subject": "Was darfs den sein?",
+                        "verb": "remove"
+                    }
+                ]
+                },
+                "b": {
+                    "content": "Mich interesiert etwas Spezifisches",
+                    "onsubmit": [{
+                        "resource": "board",
+                        "subject": "Auswahl",
+                        "verb": "add"
+                    },
+                    {
+                        "resource": "board",
+                        "subject": "Was darfs den sein?",
+                        "verb": "remove"
+                    }]
+                }
+            }
+        },
+        "Auswahl":{
+            "type": "multipleChoice",
+            "title": "Spezifische auswahl",
+            "stem": "Option auswählen und bestätigen um Erklärung anzuzeigen/zu verstecken",
+            "options":{
+                "a": {
+                    "content": "Speicher",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Display_Speicher",
+                        "verb": "set",
+                        "object": true
+                    }]
+                },
+                "b": {
+                    "content": "Befehle",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Display_Befehle",
+                        "verb": "set",
+                        "object": true
+                    }]
+                },
+                "c": {
+                    "content": "Bedingungen",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Display_Bedingungen",
+                        "verb": "set",
+                        "object": true
+                    }]
+                },
+                "d": {
+                    "content": "Posten",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Display_Posten",
+                        "verb": "set",
+                        "object": true
+                    }]
+                }
+            }
+        },
+        "Speicher_1":{
+            "type": "text",
+            "title": "Speicher",
+            "content": "Wichtig für das versändnis der Funktionsweise der Schnitzeljagd ist der Speicher. Um das Testen der Platform zu vereinfachen wird der Zustand der Schnitzeljagd im Renderer angezeigt."
+        },
+        "Speicher_board":{
+            "type": "intro",
+            "title": "Board",
+            "content": "Im unter <board> gespeicherten Array sind alle sichtbaren Posten aufgelistet. Drücke den <Trail Starten> um einen Block zum Board hinzuzufügen und ihn danach wieder zu entfernen.",
+            "onsubmit": [
+                {
+                    "resource": "keys",
+                    "subject": "Speicher_Board_Demo",
+                    "verb": "set",
+                    "object": true
+                }
+            ]
+        },
+        "Block_hinzfügen":{
+            "type": "text",
+            "title": "Teil der Board speicher Demo",
+            "content": "Der Inhalt dieses Postens ist irelevant"
+        },
+        "Speicher_quests":{
+            "type": "multipleChoice",
+            "title": "Posten zustands Demo",
+            "stem": "In <quests> sind die Zusände aller Posten gespeichert. Für Jeden Block gibt es ein Objekt das nach dem Block benannt ist. Der Zustand dieses Blocks ist also in <quests.Speicher_quests> gespeichert. Probiere mit diesem Posten zu interagieren um zu sehen wie sich der gespeicherte Zustand verändert",
+            "options":{
+                "a": {
+                    "content": "Option a ",
+                    "onsubmit": [                    ]
+                },
+                "b": {
+                    "content": "Option b",
+                    "onsubmit": [                    ]
+                }
+            }
+        },
+        "Speicher_keys": {
+            "type": "multipleChoice",
+            "title": "Globale Variabeln demo",
+            "stem": "Im <keys> objekt werden nicht Postenspezifische daten Gespeichert. Blöcke können diese Variablen über Befehle umschreiben. Dieser Posten ist so konfiguriert das er je nach gewählter option einen anderen wert in <keys.keys_demo> schreibt",
+            "options":{
+                "a": {
+                    "content": "Es wird \"Test\" in den Speicher geschrieben",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "keys_demo",
+                        "verb": "set",
+                        "object": "Test"
+                    }]
+                },
+                "b": {
+                    "content": "Es wird null in den Speicher geschrieben",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "keys_demo",
+                        "verb": "set",
+                        "object": null
+                    }]
+                }
+            }
+        },
+        "Befehle":{
+            "type":"multipleChoice",
+            "title":"Befehle",
+            "stem": "Befehle sind das System das es Posten erlaubt werte auserhalb des eigenen Kontexts zu verändern. Die verschiedenen auswahloptionen werden die hier zur verfügung stehen erlauben es ein Befehlsobjekt in <keys.befehl_demo> zu Schreiben um zu sehen wie sie aufgebaut sind.",
+            "options":{
+                "a":{
+                    "content": "Schreibbefehle dienen dazu werte im <keys> Objekt umzuschreiben",
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object": null
+                    },{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object": {
+                            "resource": "keys",
+                            "subject": "adresse",
+                            "verb": "set",
+                            "object": "Wert"
+                        }
+                    }] 
+                },
+                "b":{
+                    "content": "Ein weiterer Befehl erlaubt es interaktive Posten zu deaktivieren. Sie sind dann immernoch sichtbar aber keine der Knöpfe und auswahlen können betätigt werden.", 
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object": null
+                    },{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object":  {
+                            "resource": "quests",
+                            "subject": "Namen des Postens der deaktiviert werden soll",
+                            "verb": "disable"
+                        }
+                    }] 
+                },
+                "c":{
+                    "content": "Der letzte typ von Befehle erlaubt es Posten sichtbar zu machen oder sie wieder verschwinden zu lassen.", 
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object": null
+                    },{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object":  {
+                            "resource": "board",
+                            "subject": "Namen des Postens der entfernt werden soll",
+                            "verb": "remove"
+                        }
+                    }] 
+                },
+                "d":{
+                    "content": "Für eine demonstration des Deaktivations Befehls diese Option wählen der Posten wird dan deaktiviert", 
+                    "onsubmit":[{
+                        "resource": "quests",
+                        "subject": "Befehle",
+                        "verb": "disable"
+                    },{
+                        "resource": "keys",
+                        "subject": "befehl_demo",
+                        "verb": "set",
+                        "object": null
+                    }
+                ] 
+                }
+            }
+        },
+        "Bedingungen":{
+            "type":"multipleChoice",
+            "title":"Bedingungen",
+            "stem": "Um forgeschrittene Logik zu ermöglichen wurde ein System von Bedingungen konzipiert. Die Konfiguration der Schnitzeljagd enthält eine Liste von Bedingungen. Zu jeder dieser Bedingungen gibt es eine Liste von Befehlen die ausgefürt wirde wenn die Bedingung erfült ist. Dei verschiedenen Bedingungen Können hier wie die Verschiedenen Befehlen inspiziert werden.",
+            "options":{
+                "a":{
+                    "content": "A = B Prüft ob die Werte an zwei Adressen gleich sind.",
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object":  null
+                    },{
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object": {
+                            "type": "aeqb",
+                            "key1": "adresse von A",
+                            "key0": "adresse von B"
+                        }
+                    }] 
+                },
+                "b":{
+                    "content": "All überprüft ob alle Bedingungen einer Liste erfült sind.",  
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object":  null
+                    },{
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object":{
+                            "type": "all",
+                            "s": ["eine Liste von Bedingungen"]
+                        }
+                    }] 
+                },
+                "c":{
+                    "content": "Deep Equal überprüft ob ein Wert an einer Adresse einem konkreten Wert entspricht.", 
+                    "onsubmit":[{
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object":  null
+                    },
+                    {
+                        "resource": "keys",
+                        "subject": "Bedingungen_demo",
+                        "verb": "set",
+                        "object":  {
+                            "type": "deq",
+                            "key": "Adresse",
+                            "value": "Zielwert"
+                        }
+                    }] 
+                }
+            }
+        },
+        "Bedingungen_110":{
+            "type":"multipleChoice",
+            "title":"Zelulärer automat Profe of Concept",
+            "stem":"Um zu demonstrieren wozu das Implementierte Logiksystem fähig ist wurden der Regel 110 Automat in kleinem Format implementiert. Die 3 unter diesem Posten sichtbaren Blöcke zeigen jeweils ob die 3 Imputzellen Leben oder Tod sind. In den Nächsten 3 Anzeigeposten kann man den Zustand der Zellen im nächsten Ziklus ablessen. Dabei wird angenomen das die 3 Zellen eine Schlaufe bilden. Um den Zustand der Imputzellen zu ändern kann dieser Posten verwendet werden.",
+            "options":{
+                "a":{"content": "Zelle 1 invertieren",
+                "onsubmit":[
+                    {
+                        "resource": "keys",
+                        "subject": "Cellular_Trigger_1",
+                        "verb": "set",
+                        "object": true
+                    }
+                ]
+            },
+                "b":{"content": "Zelle 2 invertieren",
+                "onsubmit":[
+                    {
+                        "resource": "keys",
+                        "subject": "Cellular_Trigger_2",
+                        "verb": "set",
+                        "object": true
+                    }
+                ]
+            },
+                "c":{"content": "Zelle 3 invertieren",
+                "onsubmit":[
+                    {
+                        "resource": "keys",
+                        "subject": "Cellular_Trigger_3",
+                        "verb": "set",
+                        "object": true
+                    }
+                ]
+            }
+        }
+        },
+        "Bedingungen_110_cell_1_imput":{
+            "type": "output",
+            "title": "Zelle 1 imput",
+            "address": "Cellular_Imput_1",
+            "content": "Zelle 1 ist im zustand"
+        }, "Bedingungen_110_cell_2_imput":{
+            "type": "output",
+            "title": "Zelle 2 imput",
+            "address": "Cellular_Imput_2",
+            "content": "Zelle 2 ist im zustand"
+        }, "Bedingungen_110_cell_3_imput":{
+            "type": "output",
+            "title": "Zelle 3 imput",
+            "address": "Cellular_Imput_3",
+            "content": "Zelle 3 ist im zustand"
+        }, "Bedingungen_110_cell_1_output":{
+            "type": "output",
+            "title": "Zelle 1 output",
+            "address": "Cellular_Output_1",
+            "content": "Das Resultat für Zelle 1 ist"
+        }, "Bedingungen_110_cell_2_output":{
+            "type": "output",
+            "title": "Zelle 2 output",
+            "address": "Cellular_Output_2",
+            "content": "Das Resultat für Zelle 2 ist"
+        }, "Bedingungen_110_cell_3_output":{
+            "type": "output",
+            "title": "Zelle 3 output",
+            "address": "Cellular_Output_3",
+            "content": "Das Resultat für Zelle 3 ist"
+        },
+        "Posten_Intro":{
+            "type": "intro",
+            "title": "Die Posten",
+            "content": "In diesem Abschnit werden die verschiedenen Posten Demonstriert. Das hier ist ein Bestätigungs Posten. Dieser Typ von Posten wurde entwickelt um am Beginn einer Schnitzeljagd alfälige Informationen anzuzeigen bevor es los geht. Wie aber Vieleicht aufgefallen ist wird er gerne auch mal als Knopf misbraucht. Der Knopf dieses Postens sorgt dafür das Das Objekt das diesen Posten Beschreibt in <keys.Posten_Demo> geschrieben wird.", 
+            "onsubmit": [
+                {
+                    "resource": "keys",
+                    "subject": "Posten_Demo",
+                    "verb": "set",
+                    "object": null
+                },
+                {
+                    "resource": "keys",
+                    "subject": "Posten_Demo",
+                    "verb": "set",
+                    "object": {
+                        "type": "intro",
+                        "title": "Die Posten",
+                        "content": "In diesem Abschnit werden die verschiedenen Posten Demonstriert. Das hier ist ein Bestätigungs Posten. Dieser Typ von Posten wurde entwickelt um am Beginn einer Schnitzeljagd alfälige Informationen anzuzeigen bevor es los geht. Wie aber Vieleicht aufgefallen ist wird er gerne auch mal als Knopf misbraucht. Der Knopf dieses Postens sorgt dafür das Das Objekt das diesen Posten Beschreibt in <keys.Posten_Demo> geschrieben wird.", 
+                        "onsubmit": [
+                            {
+                                "resource": "keys",
+                                "subject": "Posten_Demo",
+                                "verb": "set",
+                                "object": null
+                            },
+                            {
+                                "resource": "keys",
+                                "subject": "Posten_Demo",
+                                "verb": "set",
+                                "object": "this"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Posten_Text":{
+            "type":"text",
+            "title": "Text",
+            "content": "Das hier ist ein Text Posten. Er dient dazu text anzuzeigen"
+        },
+        "Posten_Multiple_Choice":{
+            "type": "multipleChoice",
+            "title": "Multiple Choice",
+            "stem": "Multiple Choice Pösten erlauben das auswählen einer Antwort. Für jede Antwort giebt es eine Liste von Befehlen die ausgführt werden wenn der <Prüfen> Knopf betätigt wird. Multiple Choice Pösten speichern auch die Anzahl getätigter Versuche. Für jede Antwort Versuche kann ebenfalls eine Liste von Befehlen festgelegt werden. Nutze diesen Posten um die Objekte dieses Postens, des Text Postens und des Outputs Postens zu sehen. Nach 5 versuchen wird Automatisch aufgeräumt.", 
+            "ontry":{
+                "5": [
+                    {
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": null
+                    }
+                ]
+            },
+            "options": {
+                "a":{
+                    "content": "Multiple Choice",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": null
+                    },{
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": {
+                            "type": "multipleChoice",
+                            "title": "Multiple Choice",
+                            "stem": "Multiple Choice Pösten erlauben das auswählen einer Antwort. Für jede Antwort giebt es eine Liste von Befehlen die ausgführt werden wenn der <Prüfen> Knopf betätigt wird. Multiple Choice Pösten speichern auch die Anzahl getätigter Versuche. Für jede Antwort Versuche kann ebenfalls eine Liste von Befehlen festgelegt werden. Nutze diesen Posten um die Objekte dieses Postens, des Text Postens und des Outputs Postens zu sehen. Nach 5 versuchen wird Automatisch aufgeräumt.", 
+                            "ontry":{
+                                "5": [
+                                    {
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": null
+                                    }
+                                ]
+                            },
+                            "options": {
+                                "a":{
+                                    "content": "Multiple Choice",
+                                    "onsubmit": [{
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": null
+                                    },{
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": "this"
+                                    }]
+                                },
+                                "b":{
+                                    "content": "Text",
+                                    "onsubmit": [ {
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": null
+                                    }, {
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": "text_posten"
+                                    }
+                                ]
+                                },
+                                "c":{
+                                    "content": "Output",
+                                    "onsubmit": [{
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": null
+                                    }, {
+                                        "resource": "keys",
+                                        "subject": "Posten_Demo",
+                                        "verb": "set",
+                                        "object": "output_posten"
+                                    }]
+                                }
+                            }
+                        }
+                    }]
+                },
+                "b":{
+                    "content": "Text",
+                    "onsubmit": [ {
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": null
+                    }, {
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": {
+                            "type":"text",
+                            "title": "Text",
+                            "content": "Das hier ist ein Text Posten. Er dient dazu text anzuzeigen"
+                        }
+                    }
+                ]
+                },
+                "c":{
+                    "content": "Output",
+                    "onsubmit": [{
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": null
+                    }, {
+                        "resource": "keys",
+                        "subject": "Posten_Demo",
+                        "verb": "set",
+                        "object": {
+                            "type": "output",
+                                "title": "Output",
+                                "address": "Output_demo", 
+                                "content": "Output Posten zeigen den Wert einer gegebenen Adresse an. Der inhalt der Variabel <keys.Output_demo> ist"
+                        }
+                    }]
+                }
+            }
+        },
+        "Posten_Output":{
+            "type": "output",
+                "title": "Output",
+                "address": "Output_demo", 
+                "content": "Output Posten zeigen den Wert einer gegebenen Adresse an. Der inhalt der Variabel <keys.Output_demo> ist"
+        },
+        "Posten_QR_Scan":{
+            "type": "qrscan",
+            "title": "Qrscan: Das Resultat dieses Scans wird in <keys.Output_demo> geschrieben",
+            "addresses": ["Output_demo"]
+        },
+        "Geleitet_Next_1":{
+            "type": "intro",
+            "title": "Next",
+            "content": "Drücken um den Nächsten abschnitt zu sehen", 
+            "onsubmit":[{
+                "resource": "keys",
+                "subject": "Display_Speicher",
+                "verb": "set",
+                "object": false
+            },{
+                "resource": "keys",
+                "subject": "Display_Befehle",
+                "verb": "set",
+                "object": true
+            },{
+                "resource": "board",
+                "subject": "Geleitet_Next_1",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Geleitet_Next_2",
+                "verb": "add"
+            }
+            
+            ]
+        },
+        "Geleitet_Next_2":{
+            "type": "intro",
+            "title": "Next",
+            "content": "Drücken um den Nächsten abschnitt zu sehen", 
+            "onsubmit":[{
+                "resource": "keys",
+                "subject": "Display_Befehle",
+                "verb": "set",
+                "object": false
+            },{
+                "resource": "keys",
+                "subject": "Display_Bedingungen",
+                "verb": "set",
+                "object": true
+            },{
+                "resource": "board",
+                "subject": "Geleitet_Next_2",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Geleitet_Next_3",
+                "verb": "add"
+            }
+            
+            ]
+        },
+        "Geleitet_Next_3":{
+            "type": "intro",
+            "title": "Next",
+            "content": "Drücken um den Nächsten abschnitt zu sehen", 
+            "onsubmit":[{
+                "resource": "keys",
+                "subject": "Display_Bedingungen",
+                "verb": "set",
+                "object": false
+            },{
+                "resource": "keys",
+                "subject": "Display_Posten",
+                "verb": "set",
+                "object": true
+            },{
+                "resource": "board",
+                "subject": "Geleitet_Next_3",
+                "verb": "remove"
+            }
+            
+            ]
+        }
+
+    },
+    "megaMatrix": [{
+        "condition": {
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Speicher_Board_Demo",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Speicher_Board_Demo_Switch",
+                "value": true
+            }]
+        },
+        "effects": [
+            {
+                "resource": "keys",
+                "subject": "Speicher_Board_Demo",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Speicher_Board_Demo_Switch",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "board",
+                "subject": "Block_hinzfügen",
+                "verb": "add"
+            }
+        ]
+    },{
+        "condition": {
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Speicher_Board_Demo",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Speicher_Board_Demo_Switch",
+                "value": false
+            }]
+        },
+        "effects": [
+            {
+                "resource": "keys",
+                "subject": "Speicher_Board_Demo",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Speicher_Board_Demo_Switch",
+                "verb": "set",
+                "object": true
+            },
+            {
+                "resource": "board",
+                "subject": "Block_hinzfügen",
+                "verb": "remove"
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_1",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_1",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_1",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_1",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_2",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_2",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_2",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_2",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_3",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_3",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Trigger_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Trigger_3",
+                "verb": "set",
+                "object": false
+            },
+            {
+                "resource": "keys",
+                "subject": "Cellular_Imput_3",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_2",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_2",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_2",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_2",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_2",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_3",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_3",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_3",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_3",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_3",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_1",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_1",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },
+    {
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": false
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_1",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": false
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_1",
+                "verb": "set",
+                "object": true
+            }
+        ]
+    },{
+        "condition":{
+            "type": "all",
+            "s": [{
+                "type": "deq",
+                "key": "Cellular_Imput_3",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_1",
+                "value": true
+            },
+            {
+                "type": "deq",
+                "key": "Cellular_Imput_2",
+                "value": true
+            }]
+        },
+        "effects":[
+            {
+                "resource": "keys",
+                "subject": "Cellular_Output_1",
+                "verb": "set",
+                "object": false
+            }
+        ]
+    },
+    {
+        "condition": {
+            "type": "deq",
+            "key": "Display_Speicher",
+            "value": true
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Speicher_1",
+                "verb": "add"
+            },
+            {
+                "resource": "board",
+                "subject": "Speicher_board",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Speicher_quests",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Speicher_keys",
+                "verb": "add"
+            }
+        ]
+    },{
+        "condition": {
+            "type": "deq",
+            "key": "Display_Speicher",
+            "value": false
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Speicher_1",
+                "verb": "remove"
+            },
+            {
+                "resource": "board",
+                "subject": "Speicher_board",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Speicher_quests",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Speicher_keys",
+                "verb": "remove"
+            }
+        ]
+    },
+
+    {
+        "condition": {
+            "type": "deq",
+            "key": "Display_Befehle",
+            "value": true
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Befehle",
+                "verb": "add"
+            }
+        ]
+    },{
+        "condition": {
+            "type": "deq",
+            "key": "Display_Befehle",
+            "value": false
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Befehle",
+                "verb": "remove"
+            }
+        ]
+    },
+
+    {
+        "condition": {
+            "type": "deq",
+            "key": "Display_Bedingungen",
+            "value": true
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Bedingungen",
+                "verb": "add"
+            },
+            {
+                "resource": "board",
+                "subject": "Bedingungen_110",
+                "verb": "add"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_1_imput",
+                "verb": "add"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_2_imput",
+                "verb": "add"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_3_imput",
+                "verb": "add"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_1_output",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_2_output",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_3_output",
+                "verb": "add"
+            }
+        ]
+    },{
+        "condition": {
+            "type": "deq",
+            "key": "Display_Bedingungen",
+            "value": false
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Bedingungen",
+                "verb": "remove"
+            },
+            {
+                "resource": "board",
+                "subject": "Bedingungen_110",
+                "verb": "remove"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_1_imput",
+                "verb": "remove"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_2_imput",
+                "verb": "remove"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_3_imput",
+                "verb": "remove"
+            }, {
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_1_output",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_2_output",
+                "verb": "remove"
+            },{
+                "resource": "board",
+                "subject": "Bedingungen_110_cell_3_output",
+                "verb": "remove"
+            }
+        ]
+    },
+
+    {
+        "condition": {
+            "type": "deq",
+            "key": "Display_Posten",
+            "value": true
+        },
+        "effects": [
+            {
+                "resource": "board",
+                "subject": "Posten_Intro",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Posten_Text",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Posten_Multiple_Choice",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Posten_Output",
+                "verb": "add"
+            },{
+                "resource": "board",
+                "subject": "Posten_QR_Scan",
+                "verb": "add"
+            }
+        ]
+    }
+]
+}

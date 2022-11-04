@@ -1,0 +1,224 @@
+{
+    "title": "Solothurn",
+    "trailid": "lorem",
+    "lastedit": 177837874,
+    "initialState": {
+        "board": [
+            "a"
+        ],
+        "quests": {},
+        "keys": {}
+    },
+    "quests": {
+        "a": {
+            "type": "intro",
+            "title": "Willkommen in Solothurn",
+            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
+            "onsubmit": [
+                {
+                    "resource": "board",
+                    "subject": "a",
+                    "verb": "remove"
+                },
+                {
+                    "resource": "board",
+                    "subject": "b",
+                    "verb": "add"
+                },
+                {
+                    "resource": "board",
+                    "subject": "c",
+                    "verb": "add"
+                }
+            ]
+        },
+        "b": {
+            "type": "text",
+            "title": "Nutzlose Infos",
+            "content": "At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+        },
+        "c": {
+            "type": "multipleChoice",
+            "title": "Wichtige Frage",
+            "stem": "Was ist die Solothurner Zahl?",
+            "options": {
+                "a": {
+                    "content": "11",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "c",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "d",
+                            "verb": "add"
+                        }
+                    ]
+                },
+                "b": {
+                    "content": "s'isch immer so gsy",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "c",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "e",
+                            "verb": "add"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "f",
+                            "verb": "add"
+                        }
+                    ]
+                },
+                "c": {
+                    "content": "frag der joggeli",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "c",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "e",
+                            "verb": "add"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "f",
+                            "verb": "add"
+                        }
+                    ]
+                }
+            }
+        },
+        "d": {
+            "type": "text",
+            "title": "MC",
+            "content": "you win"
+        },
+        "e": {
+            "type": "text",
+            "title": "Fail",
+            "content": "Sehr kreativ"
+        },
+        "f": {
+            "type": "multipleChoice",
+            "title": "Mer versueches no einisch",
+            "stem": "Wieviele Brunen gibt es in Solothurn?",
+            "ontry": {
+                "15": [
+                    {
+                        "resource": "keys",
+                        "subject": "ftries",
+                        "verb": "set",
+                        "object": "15"
+                    }
+                ]
+            },
+            "options": {
+                "a": {
+                    "content": "11",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "f",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "d",
+                            "verb": "add"
+                        }
+                    ]
+                },
+                "b": {
+                    "content": "11 aber nur wenn man nur die richtigen Z\u00e4hlt",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "f",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "d",
+                            "verb": "add"
+                        }
+                    ]
+                },
+                "c": {
+                    "content": "11 weil ich faul binn und diese Zahl immer wider vorkommt ",
+                    "onsubmit": [
+                        {
+                            "resource": "quests",
+                            "subject": "f",
+                            "verb": "disable"
+                        },
+                        {
+                            "resource": "board",
+                            "subject": "d",
+                            "verb": "add"
+                        }
+                    ]
+                },
+                "d": {
+                    "content": "versuchdemo",
+                    "onsubmit": [
+                        {
+                            "resource": "board",
+                            "subject": "d",
+                            "verb": "add"
+                        },
+                        {
+                            "resource": "keys",
+                            "subject": "test",
+                            "verb": "set",
+                            "object": false
+                        }
+                    ]
+                },
+                "e": {
+                    "content": "m3 demo",
+                    "onsubmit": [
+                        {
+                            "resource": "keys",
+                            "subject": "test",
+                            "verb": "set",
+                            "object": true
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "megaMatrix": [
+        {
+            "condition": {
+                "type": "deq",
+                "key": "test",
+                "value": true
+            },
+            "effects": [
+                {
+                    "resource": "quests",
+                    "subject": "c",
+                    "verb": "enable"
+                },
+                {
+                    "resource": "keys",
+                    "subject": "esFunzt",
+                    "verb": "set",
+                    "object": "yaaa man"
+                }
+            ]
+        }
+    ]
+}
