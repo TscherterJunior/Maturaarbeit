@@ -95,7 +95,7 @@
         "content": "Das wars mit der demo"
     }
     },
-    "megaMatrix": [
+    "logicInstructions": [
         {"condition":{
             "type": "aeqb",
             "key1": "logic0",
