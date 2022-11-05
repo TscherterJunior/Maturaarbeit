@@ -1,165 +1,40 @@
-import m from "/vendor/mithril.js";
-import b from "/vendor/bss.js";
-import merge from "/vendor/mergerino.js";
-//import QrScanner from '/vendor/qr-scanner.min.js';
+import m from "/vendor/mithril.js"; // https://mithril.js.org/
+import b from "/vendor/bss.js"; // https://github.com/porsager/bss
+import merge from "/vendor/mergerino.js"; // https://github.com/fuzetsu/mergerino
 
-const { stringify, parse } = JSON;
+
+const { stringify, parse } = JSON; // comfort 
+// initial declarations
 var trails = []
 var trailcontent = {}
 let instaledtrails = {}
 let promptEvent
 let qrScanner
-
-// Statische Trail Beschreibung
-
-/*
-var trail = {
-    title: "Solothurn",
-    initialState: {
-        board: ["a"],
-        quests: {},
-        keys: {}
-    },
-    quests: {
-        a: {
-            type: "intro",
-            title: "Willkommen in Solothurn",
-            content:
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
-            onsubmit: [
-                { resource: "board", subject: "a", verb: "remove" },
-                { resource: "board", subject: "b", verb: "add" },
-                { resource: "board", subject: "c", verb: "add" },
-            ],
-        },
-        b: {
-            type: "text",
-            title: "Nutzlose Infos",
-            content:
-                "At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-        c: {
-            type: "multipleChoice",
-            title: "Wichtige Frage",
-            stem: "Was ist die Solothurner Zahl?",
-            options: {
-                a: {
-                    content: "11",
-                    onsubmit: [
-                        { resource: "quests", subject: "c", verb: "disable" },
-                        { resource: "board", subject: "d", verb: "add" },
-                    ],
-                },
-                b: {
-                    content: "s'isch immer so gsy",
-                    onsubmit: [
-                        { resource: "quests", subject: "c", verb: "disable" },
-                        { resource: "board", subject: "e", verb: "add" },
-                        { resource: "board", subject: "f", verb: "add" }
-                ],
-                },
-                c: {
-                    content: "frag der joggeli",
-                    onsubmit: [
-                        { resource: "quests", subject: "c", verb: "disable" },
-                        { resource: "board", subject: "e", verb: "add" },
-                        { resource: "board", subject: "f", verb: "add" }
-
-                ],
-                },
-            },
-        },
-        d: {
-            type: "text",
-            title: "MC",
-            content: "you win"
-        },
-        e: {
-            type: "text",
-            title: "Fail",
-            content:"Sehr kreativ"
-                
-        },
-        f: {
-            type: "multipleChoice",
-            title: "Mer versueches no einisch",
-            stem: "Wieviele Brunen gibt es in Solothurn?",
-            ontry: {
-                15 : [{resource : "keys", subject: "ftries", verb : "set ", object: "15"}]
-            },
-            options: {
-                a: {
-                    content: "11",
-                    onsubmit: [
-                        { resource: "quests", subject: "f", verb: "disable" },
-                        { resource: "board", subject: "d", verb: "add" },
-                    ],
-                },  
-                b: {
-                    content: "11 aber nur wenn man nur die richtigen Zählt",
-                    onsubmit: [
-                        { resource: "quests", subject: "f", verb: "disable" },
-                        { resource: "board", subject: "d", verb: "add" }
-                ],
-                },
-                c: {
-                    content: "11 weil ich faul binn und diese Zahl immer wider vorkommt ",
-                    onsubmit: [
-                        { resource: "quests", subject: "f", verb: "disable" },
-                        { resource: "board", subject: "d", verb: "add" }
-
-                ],
-                },
-                d: {
-                    content: "versuchdemo",
-                    onsubmit: [
-                        { resource: "board", subject: "d", verb: "add" },
-                        { resource: "keys", subject: "test", verb: "set", object : false },
-                    ],
-                },
-                e: {
-                    content: "m3 demo",
-                    onsubmit: [
-                        { resource: "keys", subject: "test", verb: "set", object : true },
-                    ],
-                },
-            },
-        },
-    },
-    megaMatrix: [
-        {condition : {type : "deq", key : "test", value: true}, 
-        effects:    [{ resource: "quests", subject: "c", verb: "enable" },
-                    { resource: "keys", subject: "esFunzt", verb: "set", object: "yaaa man" }]}
-    ]
-};*/
-
 let trail;
+let state;
 
-// USER DATEN
+// speicher update (runtime and persistent)
 let update = (patch) => {
     let newState = merge(state, patch);
     localStorage.setItem(trail.trailid, stringify(newState));
-    console.log('update', {
-        oldState: state, patch, newState
-    })
     state = newState;
+    m.redraw()   // mithril zwingen die seite neu zu zeichnen sollte helfen den state dump aktuell zu halten 
 }
 
-let state;
 
 
 
-// Trail Komponente
+
+// Trail Renderer
 const Trail = {
-    oninit: async ({ attrs }) => {
-        trail = await m.request({ url: "/api.php", params: { id: attrs.trailid } })
+    oninit: async ({ attrs }) => { // attrs wird aus route parametern kreiert
+        trail = await m.request({ url: "/api.php", params: { id: attrs.trailid } }) // trail laden
         try {
-             if(parse(localStorage.getItem(trail.trailid)) == null){
+             if(parse(localStorage.getItem(trail.trailid)) == null){ // speicherstand aus Localstore lesen oder startzustand anwenden
                 localStorage.setItem(trail.trailid, stringify(trail.initialState))
             }
             state = parse(localStorage.getItem(trail.trailid))
-        } catch (e) {
-			console.log("ffff")
+        } catch (e) { // solte nicht nötig sein trau mich jetzt aber nicht das zu entfernen
             state = trail.initialState;
 			localStorage.setItem(trail.trailid, stringify(trail.initialState))
         }
@@ -169,106 +44,95 @@ const Trail = {
             "div",
             m(
                 "button" + b`float right`,
-                { onclick: () => {
-                    //update( trail.initialState )
+                { onclick: () => { // speicherstand zurücksetzen 
                     state = trail.initialState
                     localStorage.setItem(trail.trailid, stringify(trail.initialState))
                 }},
                 "reset"
             ),
             m("h1", trail.title),
-            m("button", {onclick : ()=>{m.route.set('/') }}, "Home")
+            m("button", {onclick : ()=>{m.route.set('/') }}, "Home") // home button
             ,
-            state?.board?.map((quest) => m(Quest, { attrs, quest })),
+            state?.board?.map((quest) => m(Quest, { attrs, quest })), // sub render der einzelnen Posten
             m("hr"),
             "State",
             dump(state)
-        ) : 'loading ...'
+        ) : 'loading ...' // loading ... falls 
     }
 };
 
-const Index = {
+const Index = { // main page renderer
     oninit: async () => {
-        window.addEventListener('beforeinstallprompt', function (e) {
+        window.addEventListener('beforeinstallprompt', function (e) { // event für das instalieren der PWA abfangen
             e.preventDefault();
             promptEvent = e;
         });
-        //trails = await m.request({ url: "/api.php", method: "GET" });
-        await m.request({ url: "/api.php", method: "GET" }).then( (f) => (trails = f)).catch((e) => {
-            let a = parse(localStorage.getItem("instaledtrails"))
-            for (let e in a) {
-                //console.log(e)
-                if (a[e]) trails.push(e)
+        await m.request({ url: "/api.php", method: "GET" }).then( (response) => (trails = response)).catch((e) => { // liste der trails laden 
+            
+            let instaled_trails = parse(localStorage.getItem("instaledtrails"))
+            trails = [] // um stacking zu verhinder wenn man offline zur main page zurückkehrt
+            for (let trailname in instaled_trails) {
+                if (instaled_trails[trailname]) trails.push(trailname)
             }
-            //  console.log(a)
         })
         
-
-        //console.log(trails ?? "reeeeeee")
-        for (let t of trails) {
-            trailcontent[t] = await m.request({ url: "/api.php", params: { id: t } })
+        for (let _trail of trails) { // trails laden um meta info zu extrahieren antwort vom server oder vom worker
+            trailcontent[_trail] = await m.request({ url: "/api.php", params: { id: _trail } })
         }
     },
+
     view: () => {
         let localtrails = trailcontent
-        let a = parse(localStorage.getItem("instaledtrails"))
-        return m("div", "Übersicht",m("button", {onclick : ()=>{
+        let instaledtrails = parse(localStorage.getItem("instaledtrails"))
+
+        return m("div", "Übersicht",
+        //instalknopf
+        m("button", {onclick : ()=>{
             try {
-            promptEvent.prompt();  // Wait for the user to respond to the prompt
+            promptEvent.prompt();  // gespeichertes installevent abspiellen
             }
             catch (error){
+                // das ding funktioniert erst nachdem die seite ein 2. mahl geöffnet wurde um zu verhindern das webseiten nutzer mit popups belästigen
                 alert("Failled to instal\nThis is most likely due to how the browser tries to protect users from anoying popups. Reopening the page in 5 to 10 min and pressing this button again should yield better results.")
                 console.log(error)
             }
-            promptEvent.userChoice
-            .then(choice => {
-                if (choice.outcome === 'accepted') {
-                    console.log('User accepted');
-                } else {
-                    console.log('User dismissed');
-                }
-            })
         }},"instal"),
+
+
             m(
                 "ol",
-                trails.map((t) => {
+                trails.map((_trail) => {
                     return [m(
-                        m.route.Link,
+                        m.route.Link, // leitet zu den seiten der spezifischen trails weiter
                         {
                             href: `/trail/`,
                             selector: "li",
-                            params: { date: Date.now(), trailid: t },
+                            params: { date: Date.now(), trailid: _trail },
                         },
-                        localtrails[t]?.title ?? ""
+                        localtrails[_trail]?.title ?? ""
                     ),
-                    m("div", localtrails[t]?.lastedit),
-                    m("button",{onclick: () =>  {
-                        if(a?.[t]){
-                            //console.log(123312)
-                            //console.log(navigator.serviceWorker)
-                            //console.log(navigator.serviceWorker.getRegistrations())
 
-                           // navigator.serviceWorker.getRegistrations().then( (sw) => {
-                             //   console.log(sw)
-                           // })
+                    m("div", localtrails[_trail]?.lastedit),
+                    m("button",{onclick: () =>  { // install / deinstall Knopf
 
+                        if(instaledtrails?.[_trail]){
+                            // sendet nachricht zum serviceWorker und editiert die liste der instalierten trails
                             navigator.serviceWorker.controller.postMessage({
-                                type: "dodelete", trail : t
+                                type: "dodelete", trail : _trail
                               });
                               instaledtrails = parse(localStorage.getItem("instaledtrails")) ?? {}
-                              instaledtrails[t] = false
+                              instaledtrails[_trail] = false
                               localStorage.setItem("instaledtrails", stringify(instaledtrails))
                             }
                         else{
-                        //console.log(navigator.serviceWorker.controller)
                         instaledtrails = parse(localStorage.getItem("instaledtrails")) ?? {}
-                        instaledtrails[t] = true
+                        instaledtrails[_trail] = true
                         localStorage.setItem("instaledtrails", stringify(instaledtrails))
                         navigator.serviceWorker.controller.postMessage({
-                            type: "doinstal", trail : t
+                            type: "doinstal", trail : _trail
                           });
                         }
-                    }},a?.[t] ? "delete" : "instal")
+                    }},instaledtrails?.[_trail] ? "delete" : "instal")
                 ]    
                 })
             ),
@@ -280,20 +144,21 @@ const Index = {
 // Quest Container Komponente
 const Quest = {
     view: ({ attrs }) => {
+        // parameter restruckturieren
         const id = attrs.quest;
         const trailid = attrs.attrs.trailid
         const { title, type } = trail.quests[id];
-        return m(
+        return m(// box + title 
             "div" + b`border 1px solid silver; m 1ex; p 1ex`,
             `Quest ${id}: ${title}`,
             m("hr"),
-            m(registery[type], { trailid, id, ...trail.quests[id] })
+            m(registery[type], { trailid, id, ...trail.quests[id] }) // typspezifischer render aufruffen
         );
     },
 };
 
-// Quest Typen
 
+// container für typspezifische Rnderer 
 const registery = {};
 
 registery["intro"] = {
@@ -312,7 +177,7 @@ registery["intro"] = {
 
 registery["qrscan"] = {
     oninit: ({attrs}) => {
-        import('/vendor/qr-scanner.min.js').then((module) => {
+        import('/vendor/qr-scanner.min.js').then((module) => { 
             const QrScanner = module.default;
             qrScanner = new QrScanner(
                 vidbox,
@@ -320,17 +185,15 @@ registery["qrscan"] = {
                     console.log('decoded qr code:', result)
                     qrScanner.stop()
                     for (let adress of attrs.addresses){
-                        //console.log(adress)
-                        execute({
+                        execute({ // Befehle können auch so verwendet werden anstat nur fordefiniert
                             resource: "keys",
                             subject: adress,
                             verb: "set",
                             object: result.data
                         })
                     }
-                    //console.log(attrs)
                 },
-                { /* your options or returnDetailedScanResult: true if you're not specifying any other options */ },
+                {}, // parameter der scanlibrary 
             );
         });
     },  
@@ -380,7 +243,6 @@ registery["multipleChoice"] = {
                         disabled: state?.quests?.[attrs.id]?.disabled,
                         checked: state?.quests?.[attrs.id]?.selected === name,
                         onclick: () => {
-                            //console.log(attrs.id,"mama", name)
                             update({
                                     quests: { [attrs.id]: { selected: name } },
                                 }
@@ -397,12 +259,12 @@ registery["multipleChoice"] = {
                     disabled: !state?.quests?.[attrs.id]?.selected,
                     onclick: () => {
                         const selected = state.quests[attrs.id].selected;
+                        // anzahl versuche erhöhen
                         update({
                                 quests: { [attrs.id]: { tries: (x) => typeof x == "number" ? x + 1 : 1 } },
                         })
                         attrs.options[selected].onsubmit.forEach((x) => execute(x));
                         if (attrs?.ontry?.[state?.quests?.[attrs.id]?.tries] != undefined) {
-                            //console.log(attrs?.ontry?.[state?.quests?.[attrs.id]?.tries], "mfmfm")
                             attrs?.ontry?.[state?.quests?.[attrs.id]?.tries].forEach(execute)
                         }
                     },
@@ -412,11 +274,10 @@ registery["multipleChoice"] = {
         ),
 };
 
-
-// Engine
+// befehl ausführen 
 const execute = (cmd) => {
-    //console.log(cmd)
     if (cmd.resource === "board") {
+        // posten hinzufügen oder entfernen
         const { subject, verb } = cmd;
         if (verb == "add" && !state.board.includes(subject)) {
             update({ board: (list) => [...list, subject] } );
@@ -425,6 +286,7 @@ const execute = (cmd) => {
         }
     }
     if (cmd.resource === "quests") {
+        // posten aktivieren oder deaktivieren
         const { subject, verb } = cmd;
         if (verb == "disable") {
             update({ quests: { [subject]: { disabled: true } } } );
@@ -434,53 +296,48 @@ const execute = (cmd) => {
         }
     }
     if (cmd.resource === "keys") {
-        //console.log(cmd)
+        // posten unspezifische variabeln umschreiben
         var oldState = state
         const { subject, verb, object } = cmd;
         if (verb == "set") {
             update({ keys: { [subject]: object } } )
         }
         if (stringify(oldState) != stringify(state)) {
-            m3()
-            //console.log("fff")
+            runLogic()
         }
 
     }
-    m.redraw()
+    m.redraw()  // mithril zwingen die seite neu zu zeichnen sollte helfen den state dump aktuell zu halten 
 };
 
-const m3 = () => {
-    trail.megaMatrix.forEach(p => {
+const runLogic = () => { // 
+    trail.logicInstructions.forEach(p => {
         if (conditionTest(p.condition)) {
             p.effects.forEach((x) => execute(x))
         }
     })
 }
 
-const conditionTest = (condition) => {
-    //console.log(condition,"aaa")
-    if (condition.type == "deq") {
+const conditionTest = (condition) => { // giebt für eine Bedingung den Wahrheitswert zurück
+    if (condition.type == "deq") {  // deq für deep equal werd ich jetzt nicht ändern weill dan alle config dateien nicht funktionieren würden
         return state.keys[condition.key] === condition.value
     }
-	else if(condition.type == "aeqb"){
+	else if(condition.type == "aeqb"){ // a equalls b 
         return state.keys[condition.key1] === state.keys[condition.key0]
     }
-    else if(condition.type == "not"){
+    else if(condition.type == "not"){ // !
         return !conditionTest(condition.condition)
     }
-    else if (condition.type == "all"){
-        //console.log(condition)
-        //console.log(condition.s.reduce((a,b) => (a + conditionTest(b) ? 1 : 0 ),0) )
+    else if (condition.type == "all"){ // alle müssen erfült sein
         return (condition.s.reduce((a,b) => {return a + (conditionTest(b) ? 1:0)},0) == condition.s.length)
     }
 }
 
 
-// Helper
+// JSON to Readable 
 const dump = (data) => m("pre", JSON.stringify(data, null, "  "));
 
 // Run it ...
-//m.mount(document.body, Trail);
 
 m.route(document.body, "/", {
     "/": Index,
