@@ -647,7 +647,7 @@
         }
 
     },
-    "megaMatrix": [{
+    "logicInstructions": [{
         "condition": {
             "type": "all",
             "s": [{
