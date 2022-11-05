@@ -29,11 +29,11 @@ self.addEventListener("install", installEvent => { // on install event
     )
   })
 
- /* 
+ 
  macht vermutlich etwas kaput aber ich binn mir hier echt nicht sicher
  self.addEventListener("activate", (event) => {
     event.waitUntil(clients.claim());  // service worker in aktiven zustand versetzen 
-  }); */
+  }); 
 
   self.addEventListener("message",(m) => { // messages werden verwendet um dem service worker zu sagen welcher trail installiert oder denistalliert werden soll
     if (m.data.type == "doinstal"){ // install
